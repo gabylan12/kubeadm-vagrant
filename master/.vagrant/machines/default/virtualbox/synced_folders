@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/media/datos/vagrant/projects/kubeadm/kubeadm-vagrant/master","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
