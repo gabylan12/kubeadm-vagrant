@@ -25,6 +25,7 @@ echo "finish installing docker."
 echo "reloading kubelet..."
     systemctl daemon-reload
     systemctl restart kubelet
+    export KUBECONFIG=/etc/kubernetes/admin.config
 echo "finish kubelet reload."
 
 
