@@ -1,5 +1,11 @@
 #!/bin/bash
 
+##########################################################################
+#
+# Install all requisites to execute kubernetes
+#
+##########################################################################
+
 #sudo su && echo 1 > /proc/sys/vm/drop_caches
 #INSTALL kubeadm https://kubernetes.io/docs/setup/independent/install-kubeadm/
 echo "Installing kubeadm ...."
@@ -26,6 +32,6 @@ echo "reloading kubelet..."
     systemctl daemon-reload
     systemctl restart kubelet
     export KUBECONFIG=/etc/kubernetes/admin.config
+    echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >> /etc/profile
 echo "finish kubelet reload."
-
 

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+##########################################################################
+#
+# Install all requisites to execute kubernetes
+#
+##########################################################################
+
 #sudo su && echo 1 > /proc/sys/vm/drop_caches
 #INSTALL kubeadm https://kubernetes.io/docs/setup/independent/install-kubeadm/
 echo "Installing kubeadm ...."
@@ -11,6 +17,8 @@ echo "Installing kubeadm ...."
 
 	echo "cgroup-driver=cgroupfs" >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf#    
 	echo 'Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"' >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+	echo 'export KUBECONFIG=/etc/kubernetes/admin.conf' >> /etc/profile
+	export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "finish kubeadm installation."
 
 #Install dockerkub
@@ -27,23 +35,3 @@ echo "reloading kubelet..."
     systemctl restart kubelet
 echo "finish kubelet reload."
 
-#Starting kubeadm service
-echo "starting kubeadm ..."
-    kubeadm init  --apiserver-advertise-address=192.168.1.2 --ignore-preflight-errors Swap
-    #kubeadm init --apiserver-advertise-address=192.168.1.8 --ignore-preflight-errors Swap
-    mkdir -p $HOME/.kube
-    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-    chown vagrant:vagrant $HOME/.kube/config
-    export KUBECONFIG=$HOME/.kube/config
-    kubectl apply -f https://raw.githubusercontent.com/romana/romana/master/containerize/specs/romana-kubeadm.yml
-   # kubectl apply --filename https://git.io/weave-kube-1.6
-    kubectl patch node jessie-master -p '{"spec":{"taints":[]}}'
-echo "kubeadm started."
-
-echo "installing dashboard ..."
-  # follow https://dzone.com/articles/deploying-kubernetes-dashboard-to-a-kubeadm-create
-  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
-  kubectl proxy --address=192.168.1.2 --accept-hosts='^*$'
-  kubectl apply -f admin-dashboard.yml
-  # url http://192.168.1.2:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
-echo "finish installing dashboard."
