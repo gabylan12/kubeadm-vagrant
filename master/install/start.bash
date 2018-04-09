@@ -44,7 +44,7 @@ echo "installing dashboard ..."
 echo "finish installing dashboard."
 
 echo 'proxy for dashboard'
-  sleep 60
+  sleep 30
   echo "pulse skip button to see dashboard and follow this link"
   echo "http://$IP:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login"
 echo "finish installing dashboard."

@@ -6,6 +6,8 @@ Vagrant.configure(2) do |config|
    config.vm.hostname = "jessie-node"
    config.vm.synced_folder "install", "/install"
    config.vm.network "public_network"
+   config.vm.synced_folder "examples", "/examples"
+
 
    config.vm.provider "virtualbox" do |vb|
       vb.gui = false

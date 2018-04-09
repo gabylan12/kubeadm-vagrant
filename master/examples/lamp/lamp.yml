@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lamp-deployment
+  labels:
+    app: lamp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lamp-pod
+  template:
+    metadata:
+      name: lamp-pod
+      labels:
+        app: lamp-pod
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.5
+        ports:
+         - containerPort: 3306
+        volumeMounts:
+         - mountPath: /docker-entrypoint-initdb.d
+           name: mysql-init
+        env:
+         - name: MYSQL_DATABASE
+           value: "foo_database"
+         - name: MYSQL_USER
+           value: "foo_user"
+         - name: MYSQL_PASSWORD
+           value: "foo_password"
+         - name: MYSQL_RANDOM_ROOT_PASSWORD
+           value: "true"
+      - name: php
+      #  image: php:5.6-apache-jessie
+        image: svendocker/php-mysql
+        ports:
+         - containerPort: 80
+        volumeMounts:
+         - mountPath: /var/www/html/
+           name: php-source
+      volumes:
+       - name: mysql-init
+         hostPath:
+           path: /examples/lamp/mysql-scripts/
+           type: Directory
+       - name: php-source
+         hostPath:
+           path: /examples/lamp/php-code/
+           type: Directory
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: lamp-service
+  labels:
+    app: lamp-service
+spec:
+  ports:
+  - name: php-port
+    port: 80
+    protocol: TCP
+    nodePort: 30080
+  - name: mysql-port
+    port: 3306
+    protocol: TCP
+    nodePort: 32306
+  clusterIP: 10.96.0.4
+  type: NodePort
+  selector:
+    app: lamp-pod
