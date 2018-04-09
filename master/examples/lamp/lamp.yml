@@ -33,7 +33,6 @@ spec:
          - name: MYSQL_RANDOM_ROOT_PASSWORD
            value: "true"
       - name: php
-      #  image: php:5.6-apache-jessie
         image: svendocker/php-mysql
         ports:
          - containerPort: 80
