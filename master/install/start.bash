@@ -19,7 +19,7 @@ echo "starting kubeadm ..."
 
     #if you want to use environment variable without sudo user
     mkdir -p $HOME/.kube
-    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    cp  /etc/kubernetes/admin.conf $HOME/.kube/config
     chown vagrant:vagrant $HOME/.kube/config
  #   export KUBECONFIG=$HOME/.kube/config
 
@@ -41,8 +41,10 @@ echo "installing dashboard ..."
 
   #start proxy
   kubectl proxy --address=$IP --accept-hosts='^*$' &
+echo "finish installing dashboard."
 
-  echo 'proxy for dashboard'
+echo 'proxy for dashboard'
+  sleep 60
+  echo "pulse skip button to see dashboard and follow this link"
   echo "http://$IP:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login"
-  # url http://192.168.1.2:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login
 echo "finish installing dashboard."

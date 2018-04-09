@@ -35,9 +35,10 @@ this commands install kubeadm, kubelet, docker
 
 6 - execute 
 
-_/install/start.bash \<IP>_ for example _./install/start.bash 192.168.1.4_
+_/install/start.bash \<IP>_ for example _/install/start.bash 192.168.1.4_
 
-this commands start kubeadm as master and install dashboard
+this commands start kubeadm as master and install dashboard.
+You can search the ip address with the command _ip addr_.
 
 
 **Node** 

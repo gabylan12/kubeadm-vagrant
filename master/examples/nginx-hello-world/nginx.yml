@@ -19,3 +19,18 @@ spec:
         image: nginx:1.12.2
         ports:
          - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    nodePort: 30006
+  type: NodePort
+  selector:
+    app: nginx-pod
