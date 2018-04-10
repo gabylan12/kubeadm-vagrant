@@ -35,3 +35,13 @@ echo "reloading kubelet..."
     systemctl restart kubelet
 echo "finish kubelet reload."
 
+#Install mysql server
+echo "install mysql ..."
+    sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password password'
+    sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password password'
+    sudo apt-get -y install mysql-server
+    mysql -h localhost -u  root --password=password < /examples/external-service/mysql-scripts/data.sql
+    sed -i -e 's/bind-address/#bind-address/g' /etc/mysql/my.cnf
+    service mysql restart
+echo "finish mysql."
+

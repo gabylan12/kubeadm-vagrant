@@ -39,12 +39,15 @@ echo "installing dashboard ..."
   #disable security dashboard
   kubectl apply -f /install/setup-dashboard.yml
 
-  #start proxy
-  kubectl proxy --address=$IP --accept-hosts='^*$' &
-echo "finish installing dashboard."
 
 echo 'proxy for dashboard'
   sleep 30
   echo "pulse skip button to see dashboard and follow this link"
   echo "http://$IP:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login"
 echo "finish installing dashboard."
+
+  #start proxy
+  kubectl proxy --address=$IP --accept-hosts='^*$'
+echo "finish installing dashboard."
+
+

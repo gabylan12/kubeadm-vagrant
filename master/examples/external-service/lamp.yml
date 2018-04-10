@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lamp-deployment-external-endpoint
+  labels:
+    app: lamp-deployment-external-endpoint
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lamp-pod-external-endpoint
+  template:
+    metadata:
+      name: lamp-pod
+      labels:
+        app: lamp-pod-external-endpoint
+    spec:
+      containers:
+      - name: php
+        image: svendocker/php-mysql
+        ports:
+         - containerPort: 80
+        volumeMounts:
+         - mountPath: /var/www/html/
+           name: php-source
+      volumes:
+       - name: php-source
+         hostPath:
+           path: /examples/external-service/php-code/
+           type: Directory
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: lamp-service-external-endpoint
+  labels:
+    app: lamp-service-external-endpoint
+spec:
+  ports:
+  - name: php-port
+    port: 80
+    protocol: TCP
+    nodePort: 30082
+  type: NodePort
+  selector:
+    app: lamp-pod-external-endpoint
