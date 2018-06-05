@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  namespace: production
   labels:
     app: nginx-deployment
 spec:
@@ -28,13 +29,14 @@ kind: Service
 apiVersion: v1
 metadata:
   name: nginx-service
+  namespace: production
   labels:
     app: nginx-service
 spec:
   ports:
   - port: 80
     protocol: TCP
-    nodePort: 30008
+    nodePort: 30020
   type: NodePort
   selector:
     app: nginx-pod

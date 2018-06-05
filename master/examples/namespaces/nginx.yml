@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  namespace: development
   labels:
     app: nginx-deployment
 spec:
@@ -23,18 +24,3 @@ spec:
         image: jboss/wildfly:11.0.0.Final
         ports:
          - containerPort: 8080
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: nginx-service
-  labels:
-    app: nginx-service
-spec:
-  ports:
-  - port: 80
-    protocol: TCP
-    nodePort: 30008
-  type: NodePort
-  selector:
-    app: nginx-pod
