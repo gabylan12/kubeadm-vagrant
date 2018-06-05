@@ -19,6 +19,10 @@ spec:
         image: nginx:1.12.2
         ports:
          - containerPort: 80
+      - name: jboss
+        image: jboss/wildfly:11.0.0.Final
+        ports:
+         - containerPort: 8080
 ---
 kind: Service
 apiVersion: v1

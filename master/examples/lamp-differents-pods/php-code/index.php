@@ -1,4 +1,5 @@
-<?$enlace = mysqli_connect("lamp-service-differents-pods.default.svc.cluster.local",  "foo_user", "foo_password","foo_database");
+<? //$enlace = mysqli_connect("lamp-service-differents-pods.default.svc.cluster.local",  "foo_user", "foo_password","foo_database");
+$enlace = mysqli_connect("lamp-service-differents-pods.default.svc.cluster.local",  "foo_user", "foo_password","foo_database");
 
 if (!$enlace) {
     echo "Error: No se pudo conectar a MySQL." . PHP_EOL;

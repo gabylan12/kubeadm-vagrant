@@ -1,0 +1,4 @@
+.idea/
+.vagrant/
+node/.vagrant/
+master/.vagrant/
