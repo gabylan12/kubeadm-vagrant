@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitlab-runner
+  namespace: default
+data:
+  config.toml: |
+    concurrent = 4
+
+    [[runners]]
+      name = "Kubernetes Runner"
+      url = "http://192.168.1.20/"
+      token = "5a2e5a422ca6930330becdc23b81e7"
+      executor = "kubernetes"
+      [runners.kubernetes]
+        namespace = "default"
+        image = "docker:dind"
+        priviliged = "true"
+        [[runners.kubernetes.volumes.host_path]]
+           name = "docker"
+           path = "/var/run/docker.sock"
+           mount_path = "/var/run/docker.sock"
+           read_only = false
+
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gitlab-runner
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gitlab-runner
+  template:
+    metadata:
+      labels:
+        name: gitlab-runner
+    spec:
+      containers:
+      - args:
+        - run
+        image: gitlab/gitlab-runner:latest
+        imagePullPolicy: Always
+        name: gitlab-runner
+        volumeMounts:
+                - mountPath: /etc/gitlab-runner
+                  name: config
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            name: gitlab-runner
+          name: config
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: fabric8-rbac
+subjects:
+  - kind: ServiceAccount
+    # Reference to upper's `metadata.name`
+    name: default
+    # Reference to upper's `metadata.namespace`
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
